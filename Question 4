@@ -11,15 +11,5 @@ A heap is represented by an unsorted array, therefore, in order to find the righ
 It is possible to stop searching if you find a node with a higher/lower key (depends on whether you implement a MaxHeap or a MinHeap) but complexity of
 searching will still be O(n).
 
-Assuming MaxHeap, code for this function should be: 
-
-public void replace(int oldKey, int newKey){
-
-  for(int i = 0; i < this.arr.length; i++)
-    {
-      
-      
-    }
-  
-}
+Code for MaxHeap java implementaion, including the "replace" function is in MyHeap file in this repos.
 
