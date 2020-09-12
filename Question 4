@@ -1,0 +1,4 @@
+
+Let A be a heap. Given a key of a node to update, how will you find the node? 
+
+Add a function to a Heap class that finds a node by key and replaces it. 
