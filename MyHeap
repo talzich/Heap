@@ -1,3 +1,7 @@
+package youTube;
+
+import java.util.ArrayList;
+
 public class myHeap<E> {
 
 	//this class will implement max heap
@@ -15,7 +19,7 @@ public class myHeap<E> {
 
 	/* Returns number of elements (nodes) in the heap*/ 
 	public int getSize() {
-		return lastPosition + 1;
+		return lastPosition+1;
 	}
 
 	/*
@@ -30,7 +34,34 @@ public class myHeap<E> {
 		
 	}
 
-	
+	/*
+	 * Checks to see if the element just added to heap violated heap rules
+	 * If so, calls trickleUp to fix this violation 
+	 */
+	private void checkViolations(ArrayList<E> arr, int index) {
+
+		int parent = Math.floorDiv(index - 1 , 2);
+		int left = index*2 + 1;
+		int right = index*2 +2;
+		
+		if(parent >= 0)
+		{
+			if(((Comparable<E>)arr.get(index)).compareTo(arr.get(parent))>0)
+			{
+				trickleUp(arr, index);
+				return;
+			}
+			
+			if(left > lastPosition && right > lastPosition)
+			{
+				return;
+			}
+			
+			trickleDown(arr, index);
+		}
+		
+		
+	}
 
 	/*
 	 * When element violates heap rules, this function is called in order to 
@@ -106,6 +137,22 @@ public class myHeap<E> {
 
 	}
 
+	public void replace(E oldKey, E newKey) {
+		
+		for (int i = 0; i <= lastPosition; i++) 
+		{
+			if(oldKey == arr.get(i))
+			{
+				arr.set(i, newKey);
+				checkViolations(arr, i);
+				return; 
+			}
+			
+		}
+		System.out.println("Element " + oldKey + " not found");
+	}
+
+
 	public static void main(String[] args) {
 
 		myHeap<Integer> heap = new myHeap<Integer>();
@@ -116,6 +163,10 @@ public class myHeap<E> {
 		heap.add(0);
 
 		System.out.println(heap.toString());
+
+		heap.replace(0, 5);
+		
+		System.out.println(heap.toString());
 		
 		heap.add(4);
 		
@@ -123,3 +174,9 @@ public class myHeap<E> {
 		
 
 	}
+
+
+
+
+
+}
