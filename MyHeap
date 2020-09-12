@@ -1,0 +1,125 @@
+public class myHeap<E> {
+
+	//this class will implement max heap
+
+	private ArrayList<E> arr;
+	private int lastPosition;
+
+
+	//Initializes the array that implements the heap and sets size to 0
+	public myHeap(){
+
+		arr = new ArrayList<E>();
+		
+	}
+
+	/* Returns number of elements (nodes) in the heap*/ 
+	public int getSize() {
+		return arr.size();
+	}
+
+	/*
+	 * Adds element to last position in array, which is represented
+	 * by right-most element in the deepest level of the heap
+	 */
+	public void add(E element) {
+
+		arr.add(element);
+		trickleUp(arr, lastPosition);
+		lastPosition = arr.size()-1;
+		
+	}
+
+	
+
+	/*
+	 * When element violates heap rules, this function is called in order to 
+	 * set the element to its right position. 
+	 * If element is larger than its parent, it swaps them recursively.
+	 */
+	private void trickleUp(ArrayList<E> arr, int index) {
+
+		int parent = Math.floorDiv(index - 1 , 2);
+
+
+		/* 
+		 * Base case. Recursion will stop when element is at top of heap.
+		 * It should also stop when element is at its correct position
+		 */
+
+		if(index == 0) return; 
+
+		if(((Comparable<E>)arr.get(index)).compareTo(arr.get(parent)) > 0 )
+		{
+			swap(arr,index,parent);
+			trickleUp(arr, parent);
+		}
+
+		else return;
+
+	}
+
+	//simple swap funciton
+	private void swap(ArrayList<E> arr, int i, int j) {
+		E tmp = arr.get(i);
+		arr.set(i, arr.get(j));
+		arr.set(j, tmp);
+
+	}
+
+	public String toString() {
+
+		return arr.subList(0, lastPosition+1).toString();
+	}
+
+	public E remove() {
+
+		E res = arr.get(0);
+
+		swap(arr, 0, lastPosition--);
+
+		trickleDown(arr, 0);
+
+		return res; 
+	}
+
+	private void trickleDown(ArrayList<E> arr, int i) {
+
+		int left = 2*i +1;
+		int right = 2*i + 2;
+
+		if(left == lastPosition &&(((Comparable<E>)arr.get(i)).compareTo(arr.get(left)) < 0 ))
+		{
+			swap(arr, i, left);
+			return;
+		}
+
+		if(right == lastPosition &&(((Comparable<E>)arr.get(i)).compareTo(arr.get(right)) < 0 ))
+		{
+			swap(arr, i, right);
+			return;
+		}
+
+		if(left >= lastPosition || right >= lastPosition) 
+			return; 
+
+
+	}
+
+	public static void main(String[] args) {
+
+		myHeap<Integer> heap = new myHeap<Integer>();
+
+		heap.add(1);
+		heap.add(2);
+		heap.add(3);
+		heap.add(0);
+
+		System.out.println(heap.toString());
+		
+		heap.add(4);
+		
+		System.out.println(heap.toString());
+		
+
+	}
