@@ -15,7 +15,7 @@ public class myHeap<E> {
 
 	/* Returns number of elements (nodes) in the heap*/ 
 	public int getSize() {
-		return arr.size();
+		return lastPosition + 1;
 	}
 
 	/*
