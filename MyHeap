@@ -44,22 +44,10 @@ public class myHeap<E> {
 
 	}
 
-	/*
-	 * Checks to see if the element just added to heap violated heap rules
-	 * If so, calls trickleUp to fix this violation 
-	 */
-	private void checkViolations(ArrayList<E> arr, int index) {
 
-		trickleUp(index);
-		trickleDown(index);
-
-
-
-	}
 
 	/*
-	 * When element violates heap rules, this function is called in order to 
-	 * set the element to its right position. 
+	 * Checks to see whether an element should be moved up and does it accordingly.
 	 * If element is larger than its parent, it swaps them recursively.
 	 */
 	private void trickleUp(int index) {
@@ -157,7 +145,8 @@ public class myHeap<E> {
 			if(oldKey == arr.get(i))
 			{
 				arr.set(i, newKey);
-				checkViolations(arr, i);
+				trickleUp(i);
+				trickleDown(i);
 				return; 
 			}
 
