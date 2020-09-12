@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class myHeap<E> {
 
 	//this class will implement max heap
@@ -10,12 +12,12 @@ public class myHeap<E> {
 	public myHeap(){
 
 		arr = new ArrayList<E>();
-		
+
 	}
 
 	/* Returns number of elements (nodes) in the heap*/ 
 	public int getSize() {
-		return lastPosition + 1;
+		return lastPosition+1;
 	}
 
 	/*
@@ -24,20 +26,31 @@ public class myHeap<E> {
 	 */
 	public void add(E element) {
 
-		arr.add(element);
-		trickleUp(arr, lastPosition);
-		lastPosition = arr.size()-1;
+		if(arr.size() == 0) {
+			
+			arr.add(element);
+			trickleUp(lastPosition);
+			
+		}
 		
-	}
-
+		else
+		{
+			arr.add(element);
+			trickleUp(++lastPosition);
+			
+		}
+		
 	
 
+	}
+
+
+
 	/*
-	 * When element violates heap rules, this function is called in order to 
-	 * set the element to its right position. 
+	 * Checks to see whether an element should be moved up and does it accordingly.
 	 * If element is larger than its parent, it swaps them recursively.
 	 */
-	private void trickleUp(ArrayList<E> arr, int index) {
+	private void trickleUp(int index) {
 
 		int parent = Math.floorDiv(index - 1 , 2);
 
@@ -47,12 +60,12 @@ public class myHeap<E> {
 		 * It should also stop when element is at its correct position
 		 */
 
-		if(index == 0) return; 
+		if(index == 0)return; 
 
 		if(((Comparable<E>)arr.get(index)).compareTo(arr.get(parent)) > 0 )
 		{
-			swap(arr,index,parent);
-			trickleUp(arr, parent);
+			swap(index,parent);
+			trickleUp(parent);
 		}
 
 		else return;
@@ -60,7 +73,7 @@ public class myHeap<E> {
 	}
 
 	//simple swap funciton
-	private void swap(ArrayList<E> arr, int i, int j) {
+	private void swap( int i, int j) {
 		E tmp = arr.get(i);
 		arr.set(i, arr.get(j));
 		arr.set(j, tmp);
@@ -76,50 +89,81 @@ public class myHeap<E> {
 
 		E res = arr.get(0);
 
-		swap(arr, 0, lastPosition--);
+		swap(0, lastPosition--);
 
-		trickleDown(arr, 0);
+		trickleDown(0);
+		
+		arr.remove(lastPosition+1);
 
 		return res; 
 	}
 
-	private void trickleDown(ArrayList<E> arr, int i) {
+	private void trickleDown( int i) {
 
 		int left = 2*i +1;
 		int right = 2*i + 2;
+		
+		if(left > lastPosition || right > lastPosition) 
+			return;
 
+		 
+		if((((Comparable<E>)arr.get(left)).compareTo(arr.get(right)) > 0 )&&
+				(((Comparable<E>)arr.get(left)).compareTo(arr.get(i)) > 0 ))
+		{
+			swap(i, left);
+			return;
+		}
+		
+		if((((Comparable<E>)arr.get(left)).compareTo(arr.get(right)) < 0 )&&
+				(((Comparable<E>)arr.get(right)).compareTo(arr.get(i)) > 0 ))
+		{
+			swap(i, right);
+			return;
+		}
+		
 		if(left == lastPosition &&(((Comparable<E>)arr.get(i)).compareTo(arr.get(left)) < 0 ))
 		{
-			swap(arr, i, left);
+			swap(i, left);
 			return;
 		}
 
 		if(right == lastPosition &&(((Comparable<E>)arr.get(i)).compareTo(arr.get(right)) < 0 ))
 		{
-			swap(arr, i, right);
+			swap(i, right);
 			return;
 		}
 
-		if(left >= lastPosition || right >= lastPosition) 
-			return; 
+		
 
 
 	}
+
+	public void replace(E oldKey, E newKey) {
+
+		for (int i = 0; i <= lastPosition; i++) 
+		{
+			if(oldKey == arr.get(i))
+			{
+				arr.set(i, newKey);
+				trickleUp(i);
+				trickleDown(i);
+				return; 
+			}
+
+		}
+		System.out.println("Element " + oldKey + " not found");
+	}
+
 
 	public static void main(String[] args) {
 
-		myHeap<Integer> heap = new myHeap<Integer>();
+		
 
-		heap.add(1);
-		heap.add(2);
-		heap.add(3);
-		heap.add(0);
-
-		System.out.println(heap.toString());
-		
-		heap.add(4);
-		
-		System.out.println(heap.toString());
-		
 
 	}
+
+
+
+
+
+}
